@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-AU">
+<head>
+    <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+    <meta name="author" content="pat " />
+    <meta name="keywords" content="discussion, forum" />
+    <meta name="description" contetnt="buddies template" />
+    <title> Buddies.com </title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css')}}" />
+</head>
+
+<body>
+
+    <div class="layout_box" id="layout_box_id">
+        <div class="header_box" id="header_box_id">
+            <span class="title" id="title_id"> Buddies.com </span>
+            <br />
+            <span class="sub_sub_title"> An Anonymous Forum  </span>
+        </div>
+        &nbsp;
+        <br class="underpost"/>
+        <div class="header_box_content" id="header_box_content_id">
+            <div class="post_creation" id="post_creation_id">
+                <div class="description" id="description_id">
+                    <p> Buddies.com, an anonymous forum</p>
+                    </div>
+
+            </div>
+            <div class="post_side_box" id="post_side_box_id">
+
+                <button class="post_side_box_button" type="button" id="post_side_box_post_id" onclick="toggleComments(this)"> >create thread< </button>
+            </div>
+            <div class="post_right_side_box" id="post_right_side_box_id">
+                <div class="description" id="description_id">
+
+                    <p> yes i like jeff </p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="create_thread_container" id="create_thread_container_id" style="display: none;">
+            <div class="create_thread_header" id="create_thread_header">
+                <span class="create_thread_header_span" id="create_thread_header_span">
+                    Thread
+                </span>
+            </div>
+            <div class="post_input">
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="uploadContainer" id="uploadForm">
+                        <h3>Submit a Thread</h3>
+                        <label for="title">Title</label>
+                        <input type="text" id="title" name="title" placeholder="Title" class="title_input" required=required />
+
+                        <label for="image">Image</label>
+                        <input type="file" id="image" name="image" accept="image/*" required=required />
+
+                        <label for="description">Comment</label>
+<textarea id="description" name="description" placeholder="//Type something" class="description_input"></textarea>
+
+                        <button type="submit"> Post </button>
+                   </div> 
+                </form>
+                    
+
+               
+
+            </div>
+
+            </div>
+
+            <hr style=" width: 50%; color: black; background-color: black;" />
+        </div>
+    <div class="post_container" id="postContainer">
+        {% if posts %}
+        {% for post in posts %}
+
+        <div class="post" id="post_id">
+            <div class="post_header" id="post_header_id">
+                <button type="submit" class="plus" id="plus_id">  + </button>
+                <em class="user"> random_buddy: </em>
+                <em class="title_name"> {{ post.title }} </em>
+            </div>
+            <em class="image_name"> {{ post.image}} </em>
+            <div class="description_container" id="description_container_id">
+                <p class="post_description" id="post_description_id"> {{ post.description }}</p>
+                <img src="{{ post.image }}" alt="{{ post.title }}" class="post_image" id="post_image_id" />
+
+            </div>
+
+            <button type="submit" class="comment_button" id="comment_button_id" onclick="toggle(this)"> comments </button>
+            <div class="comment_section" style="display: none;">
+                <form method="post" action="{{ url_for('comment', post_id=loop.index0) }}">
+                    <textarea name="comment" placeholder="add a comment" required=required></textarea>
+                    <button type="submit"> Comment </button>
+                </form>
+
+                {% for comment in post.comments %}
+                <p class="comment_container"> ->> {{ comment }} </p>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p> no post here yet </p>
+        {% endif %}
+    </div>
+    <script src="{{ url_for('static', filename='script.js')
+                    }}"></script>
+                </p></body>
+
+
+
+
+</html>
+
+
