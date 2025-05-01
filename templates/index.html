@@ -69,31 +69,38 @@
             </div>
 
             </div>
-
-            <hr style=" width: 50%; color: black; background-color: black;" />
         </div>
-    <div class="post_container" id="postContainer">
+    <div class="post_container" id="postContainer_id">
         {% if posts %}
         {% for post in posts %}
 
         <div class="post" id="post_id">
             <div class="post_header" id="post_header_id">
-                <button type="submit" class="plus" id="plus_id">  + </button>
                 <em class="user"> random_buddy: </em>
                 <em class="title_name"> {{ post.title }} </em>
             </div>
             <em class="image_name"> {{ post.image}} </em>
             <div class="description_container" id="description_container_id">
-                <p class="post_description" id="post_description_id"> {{ post.description }}</p>
-                <img src="{{ post.image }}" alt="{{ post.title }}" class="post_image" id="post_image_id" />
+                <button type="button" class="image_holder">
+                    <img src="{{ post.image }}" alt="{{ post.title }}" class="post_image" id="post_image_id" />
+                </button>
+
+                <em class="post_description" id="post_description_id"> {{ post.description }}</em>
+
 
             </div>
 
-            <button type="submit" class="comment_button" id="comment_button_id" onclick="toggle(this)"> comments </button>
+
+            <button class="upvote-btn" data-post-id="{{ post.id }}">
+                ⇑ <span class="vote-count">{{ post.upvotes }}</span>
+            </button>
+
+            <button type="submit" class="comment_button" id="comment_button_{{ loop.index0 }}" onclick="toggle(this)"> comments </button>
+
             <div class="comment_section" style="display: none;">
                 <form method="post" action="{{ url_for('comment', post_id=loop.index0) }}">
-                    <textarea name="comment" placeholder="add a comment" required=required></textarea>
-                    <button type="submit"> Comment </button>
+                    <textarea name="comment" placeholder="add a comment" class="comment_textarea" required=required></textarea>
+                    <button type="submit" class="submit_button"> Comment </button>
                 </form>
 
                 {% for comment in post.comments %}
@@ -106,9 +113,9 @@
         <p> no post here yet </p>
         {% endif %}
     </div>
-    <script src="{{ url_for('static', filename='script.js')
-                    }}"></script>
-                </p></body>
+    <script src="{{ url_for('static', filename='script.js')}}"></script>
+
+</body>
 
 
 

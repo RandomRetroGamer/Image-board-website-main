@@ -1,11 +1,14 @@
 #app.py // yes this is called main but its the app
 #kinda built this using linux so idk how windows will handle this, i can recommend using windows visual studios just install flask and werkzeug.utils
 
-from flask import Flask, render_template, request, redirect, url_for, abort
+
+from flask import Flask, render_template, request, redirect, url_for, abort, jsonify
 import os
 import json # // adding module <<
 from werkzeug.utils import secure_filename
 import secrets
+import uuid
+from datetime import datetime
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
@@ -53,16 +56,25 @@ read_file('readme.txt')
 #// check json file
 def fix_json():
     posts = load_post()
-    changed= False
+    changed = False
 
     for post in posts:
         if "comments" not in post:
             post["comments"] = []
             changed = True
-    
+        if "upvotes" not in post:
+            post["upvotes"] = 0
+            changed = True
+        if "downvotes" not in post:  # Changed from 'downvote' to 'downvotes'
+            post["downvotes"] = 0
+            changed = True
+        if "voters" not in post:
+            post["voters"] = []
+            changed = True
+     
     if changed:
         save_posts(posts)
-        print('Fixed post')
+        print('Fixed posts')
 
 
 # // main route
@@ -74,6 +86,7 @@ def index():
         title = request.form['title']
         description = request.form['description']
         image = request.files['image']
+        user_ip = request.remote_addr
 
         if not title or not description:
             abort(400, description="Title and description required.")
@@ -84,10 +97,16 @@ def index():
             image.save(path)
 
             post = {
+                'id': str(uuid.uuid4()),
                 'title': title,
                 'description': description,
                 'image': path,
-                'comments': []
+                'comments': [],
+                'upvotes': 0,
+                'downvotes': 0,  # Changed from 'downvote' to 'downvotes' for consistency
+                'voters': [],
+                'poster_ip': user_ip,
+                'timestamp': datetime.utcnow().isoformat()
             }
 
             posts.insert(0, post)  # <-- insert the actual post, not the list itself
@@ -116,6 +135,24 @@ def comment(post_id):
         abort(404)
 
     return redirect(url_for('index'))
+
+@app.route('/upvote/<post_id>', methods=['POST'])
+def upvote(post_id):
+    posts = load_post()
+    user_ip = request.remote_addr
+
+    for post in posts:
+        if str(post.get('id')) == post_id:
+            if 'voters' not in post:
+                post['voters'] = []
+            if user_ip in post['voters']:
+                return '', 204  # already voted
+            post['upvotes'] = post.get('upvotes', 0) + 1
+            post['voters'].append(user_ip)
+            save_posts(posts)
+            return jsonify({ 'upvotes': post['upvotes']}), 200
+    return  'Post not found', 404
+
 
 if __name__ == "__main__":
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)

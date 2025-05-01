@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+﻿document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('uploadForm');
     if (!form) return;
 
@@ -54,14 +54,69 @@ function toggleComments(button) {
 }
 
 function toggle(button) {
-    const cc = document.querySelector('.comment_section');
-    if (!cc) {
-        console.error('no, comment section not found');
+    const commentSection = button.nextElementSibling;
+    if (!commentSection || !commentSection.classList.contains('comment_section')) {
+        console.error('Comment section not found next to button');
         return;
     }
-    if (cc.style.display === 'none' || cc.style.display === '') {
-        cc.style.display = 'block';
-    } else {
-        cc.style.display = 'none';
-    }
+
+    commentSection.style.display =
+        (commentSection.style.display === 'none' || commentSection.style.display === '')
+            ? 'block'
+            : 'none';
 }
+
+document.querySelectorAll('.upvote-btn').forEach(button => {
+    button.addEventListener('click', function (event) {
+        event.preventDefault();
+
+        const postID = this.dataset.postId;
+        const voteCountElement = this.querySelector('.vote-count');
+
+        console.log("Attempting to upvote post:", postID); // debug
+
+        fetch(`/upvote/${postID}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(response => {
+                if (response.status === 204) {
+                    this.style.backgroundColor = "orange";
+                } else if (response.ok) {
+                    this.style.backgroundColor = "orange";
+                    return response.json();
+                } else {
+                    throw new Error('Upvote failed');
+                }
+            })
+            .then(data => {
+                if (data && data.upvotes !== undefined) {
+                    voteCountElement.textContent = data.upvotes;
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Failed to upvote. Please try again.");
+            });
+    });
+});
+
+
+document.querySelectorAll('.downvote-btn').forEach(button => {
+    button.addEventListener('click', function (event) {
+        event.preventDefault(); // prevent form submission
+        const postId = this.dataset.postId;
+
+        fetch(`/downvote/${postId}`, {
+            method: 'POST'
+        })
+            .then(response => {
+                if (response.redirected) {
+                    // reload only part of the page, or use location.href = response.url
+                    location.reload(); // simple option, reloads but scrolls preserved
+                }
+            });
+    });
+});
