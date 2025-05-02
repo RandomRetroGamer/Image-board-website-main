@@ -103,7 +103,7 @@ def index():
                 'image': path,
                 'comments': [],
                 'upvotes': 0,
-                'downvotes': 0,  # Changed from 'downvote' to 'downvotes' for consistency
+                'downvotes': 0,
                 'voters': [],
                 'poster_ip': user_ip,
                 'timestamp': datetime.utcnow().isoformat()
@@ -153,6 +153,28 @@ def upvote(post_id):
             return jsonify({ 'upvotes': post['upvotes']}), 200
     return  'Post not found', 404
 
+@app.route('/downvote/<post_id>', methods=['POST'])
+def downvote(post_id):
+    posts = load_post()
+    user_ip = request.remote_addr
+    for post in posts:
+        if str(post.get('id')) == post_id:
+            # Ensure downvotes and voters are initialized
+            post.setdefault('downvotes', 0)
+            post.setdefault('voters', [])
+
+            if user_ip in post['voters']:
+                return '', 204  # Already voted
+
+            post['downvotes'] += 1
+            post['voters'].append(user_ip)
+            save_posts(posts)
+
+            return jsonify({'downvotes': post['downvotes']}), 200
+    
+    # If no post matched the ID, return 404 after loop
+    return 'Post Not Found', 404
+ 
 
 if __name__ == "__main__":
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)

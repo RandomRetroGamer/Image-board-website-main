@@ -103,20 +103,39 @@ document.querySelectorAll('.upvote-btn').forEach(button => {
     });
 });
 
-
 document.querySelectorAll('.downvote-btn').forEach(button => {
     button.addEventListener('click', function (event) {
-        event.preventDefault(); // prevent form submission
-        const postId = this.dataset.postId;
+        event.preventDefault();
 
-        fetch(`/downvote/${postId}`, {
-            method: 'POST'
+        const postID = this.dataset.postId;
+        const voteCountElement = this.querySelector('.vote-count');
+
+        console.log("Attempting to upvote post:", postID); // debug
+
+        fetch(`/downvote/${postID}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
         })
             .then(response => {
-                if (response.redirected) {
-                    // reload only part of the page, or use location.href = response.url
-                    location.reload(); // simple option, reloads but scrolls preserved
+                if (response.status === 204) {
+                    this.style.backgroundColor = "blue";
+                } else if (response.ok) {
+                    this.style.backgroundColor = "blue";
+                    return response.json();
+                } else {
+                    throw new Error('downvote failed');
                 }
+            })
+            .then(data => {
+                if (data && data.upvotes !== undefined) {
+                    voteCountElement.textContent = data.upvotes;
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Failed to downvote. Please try again.");
             });
     });
 });
