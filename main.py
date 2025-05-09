@@ -20,6 +20,10 @@ POSTS_FILE = 'posts.json'
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
+with open("config.json") as config_file:
+    config_data = json.load(config_file)
+    app.config.update(config_data)
+
 def allowed_files(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
