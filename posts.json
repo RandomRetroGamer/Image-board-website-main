@@ -5,9 +5,11 @@
         "description": "with some basic code in python and html this website was created. \r\n\r\nfirst i created a py file using flask, html that communicates with python file and java script that ties in everything. ",
         "image": "static/uploads\\tumblr_a9085629237633172eaf8fe2303cec23_5b3e623c_640.jpg",
         "comments": [],
-        "upvotes": 0,
+        "upvotes": 1,
         "downvotes": 0,
-        "voters": [],
+        "voters": [
+            "192.168.1.117"
+        ],
         "poster_ip": "127.0.0.1",
         "timestamp": "2025-05-09T14:43:15.465422"
     }
