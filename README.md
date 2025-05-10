@@ -6,14 +6,14 @@
 > install the requirements.txt or all the libaries that is inside of the code. Make sure you are running this in a virual enviroment for python. 
 
 # Installing on Linux
-> git clone https://github.com/RandomRetroGamer/buddies.git
-> cd buddies
-> sudo apt install dos2unix
-> dos2unix pybuild.sh
-> chmod +x pybuild.sh
-> ./pybuild.sh
->
-> http://localhost to open web app server in your browser
+- git clone https://github.com/RandomRetroGamer/buddies.git
+- cd buddies
+- sudo apt install dos2unix
+- dos2unix pybuild.sh
+- chmod +x pybuild.sh
+- ./pybuild.sh
+
+- http://localhost to open web app server in your browser
 
 
 # Over-all
