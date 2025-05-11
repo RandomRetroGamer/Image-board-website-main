@@ -1,16 +1,18 @@
 [
     {
-        "id": "147d1b5f-9aab-46c3-98b1-604971e82b31",
-        "title": "how does this work?",
-        "description": "with some basic code in python and html this website was created. \r\n\r\nfirst i created a py file using flask, html that communicates with python file and java script that ties in everything. ",
-        "image": "static/uploads\\tumblr_a9085629237633172eaf8fe2303cec23_5b3e623c_640.jpg",
-        "comments": [],
+        "id": "df4f2403-d818-4560-82aa-70f60b352587",
+        "title": "How i became the greatest coder that ever lived",
+        "description": "--- robo-corp-99 ---\r\n\r\nhello my name is randy coronado i coded the backend and the front end of this web app\r\nThis is my version of the website because my teammate didn't complete the html in team.\r\n\r\nThe code is simple, it handles request as submitting a post, title, descriptions, comments,\r\nimage_url locations. this communicates with the html file {post.id}, where it takes the \r\nstring data from the python file and uses it in the html file. Of course we have javascript\r\nhandling some of the task and make it easier on the html file, it has location save when you are\r\nscrolling and submitting a post so you don't have to re-scroll where you were at. it handles \r\ncreating treads, and comments, and other buttons.\r\n\r\nover all this was a easy project to make, css was more of a pain when creating this site. \r\n\r\n\r\n--- created by randy coronado ---\r\n--- terms of use --- \r\njust don't sell my product or use it to make any kind of monetization. follow the law when posting -(optional). ",
+        "image": "static/uploads\\bgf8f8f8-flat750x075f-pad750x1000f8f8f8.u1.jpg",
+        "comments": [
+            "the greatest coder that ever lived!"
+        ],
         "upvotes": 1,
         "downvotes": 0,
         "voters": [
             "192.168.1.117"
         ],
-        "poster_ip": "127.0.0.1",
-        "timestamp": "2025-05-09T14:43:15.465422"
+        "poster_ip": "192.168.1.117",
+        "timestamp": "2025-05-11T19:38:57.357730"
     }
 ]
